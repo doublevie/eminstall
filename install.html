@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css"  >
     <link rel="stylesheet" href="assets/css/font-awesome.min.css"  >
+    <link rel="stylesheet" href="assets/css/animate.css"  >
 <style media="screen">
   body {
     padding-top:50px;
@@ -21,12 +22,13 @@
     overflow-y: auto;overflow-x: hidden;
   }
 
-  .Next {position: absolute;right:10px;bottom:10px;font-size: 42px;line-height: 82px;cursor:pointer;padding:0;}
+  .Next {position: absolute;right:30px;bottom:10px;font-size: 42px;line-height: 82px;cursor:pointer;padding:0;}
   .Next.fixed {position: fixed;right:40px;bottom:40px;font-size: 82px;}
- .Next i{font-size: 42px;line-height: 42px}
+ .Next i{font-size: 82px;line-height: 82px}
 
 
- .tab {display:none;height:0;pointer-events: none;}
+ .tab {display:none;height:0;pointer-events: none;
+ margin-top:25px;width:500px;margin:0 auto;position:absolute;top:80px;left:0;right:0}
  .tab.active {display:block;height:auto;pointer-events: auto;}
  .fomTbl {width:100%}
  .fomTbl tr td {padding:10px}
@@ -44,26 +46,22 @@
 
 <div class="div">
 
-<div class="tab">
-  <div align="center" style="margin-top:25px;">
+<div  data-tab="0" class="tab active">
+
   <button type="button" name="button" class="btn btn-primary btn-lg"> Installer</button>
 
-</div>
+
 </div>
 
-<div class="tab active">
-  <div align="center" style="margin-top:25px;width:500px;margin:0 auto">
+<div  data-tab="1" class="tab ">
+
 <table class="fomTbl">
-<tr>
-  <td>
+<tr><td>
 NAME
-  </td>
-  <td>
+  </td><td>
 <input type="text" class="form-control" name="" value="">
-  </td>
+</td>
 </tr>
-
-
 <tr>
   <td>
 ADRESSE
@@ -81,16 +79,87 @@ TEL
 <input type="text" class="form-control" name="" value="">
   </td>
 </tr>
-
-
 </table>
-
-</div>
 </div>
 
 
-  <div class="Next">
-    demarrer l'installation
+
+
+
+
+<div  data-tab="2" class="tab ">
+  <h3 align="center">ACTIVATION</h3>
+  <h4 align="center">HABA12</h4>
+  <table class="fomTbl">
+
+  <tr>
+    <td colspan="2">
+  <input type="text" class="form-control" name="" value="">
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+ <button type="button" name="button" class="btn btn-block btn-info">Activer</button>
+    </td>
+  </tr>
+  </table>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div  data-tab="3" class="tab ">
+  <h3 align="center">ACTIVATION</h3>
+  <h4 align="center">HABA12</h4>
+  <table class="fomTbl">
+
+  <tr>
+    <td colspan="2">
+  <input type="text" class="form-control" name="" value="">
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+ <button type="button" name="button" class="btn btn-block btn-info">Activer</button>
+    </td>
+  </tr>
+  </table>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="Next" onclick="nextTab(1)">
+  <span extra>demarrer l'installation</span>
   <i class="fa fa-caret-right"></i>
   </div>
 
@@ -104,11 +173,52 @@ TEL
 </div> -->
 
     <div class="progress" style="position:fixed;left:0;bottom:0;right:0">
-  <div class="progress-bar bg-warning" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+  <div class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
 </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-     <script src="assets/js/popper.min.js" ></script>
+   <script src="assets/js/popper.min.js" ></script>
+<script type="text/javascript">
+
+
+var buttonText = ['','','','',''] ,
+  tabs = document.querySelectorAll('.tab').length ,
+currentTab = 0 ,
+progressBar = document.querySelector('.progress-bar') ,
+nextTab = function(n) {
+currentTab ++;
+if (currentTab >= tabs) ;//ends
+showTab(currentTab);
+
+};
+
+function showTab(x) {
+  var activeElem = document.querySelector('[data-tab="'+x+'"]');
+if (document.querySelector('.tab.active')) {
+  var desapear = document.querySelector('.tab.active');
+  desapear.classList.add('animated');
+  desapear.classList.add('bounceOutLeft');
+
+  window.setTimeout(function(){
+desapear.classList.remove('active');
+desapear.classList.remove('animated');
+desapear.classList.remove('bounceOutLeft');
+  },1000);
+
+}
+progressBar.style.width = Math.round(x * 100 / tabs) + '%';
+activeElem.classList.add('active');
+activeElem.classList.add('animated');
+activeElem.classList.add('bounceInRight');
+window.setTimeout(function(){
+  activeElem.classList.remove('animated');
+  activeElem.classList.remove('bounceInRight');
+  document.querySelector('[extra]').innerHTML = buttonText[x];
+},1000);
+}
+
+
+
+</script>
+
    </body>
 </html>
