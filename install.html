@@ -32,6 +32,61 @@
  .tab.active {display:block;height:auto;pointer-events: auto;}
  .fomTbl {width:100%}
  .fomTbl tr td {padding:10px}
+
+
+
+.cmn-toggle {
+  position: absolute;
+  margin-left: -9999px;
+  visibility: hidden;
+
+}
+.cmn-toggle + label {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+
+input.cmn-toggle-round + label {
+  padding: 2px;
+  width: 40px;
+  height: 20px;
+  background-color: transparent;
+  border-radius: 10px;
+}
+input.cmn-toggle-round + label:before,
+input.cmn-toggle-round + label:after {
+  display: block;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  bottom: 1px;
+  content: "";
+}
+input.cmn-toggle-round + label:before {
+  right: 1px;
+  background-color: #ccc;
+  border-radius: 60px;
+  transition: background 0.4s;
+}
+input.cmn-toggle-round + label:after {
+  width: 19px;
+  background-color: #fff;
+  border-radius: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: margin 0.4s;
+}
+input.cmn-toggle-round:checked + label:before {
+  background-color: #17A2B8;
+}
+input.cmn-toggle-round:checked + label:after {
+  margin-left:20px;
+}
+
+
 </style>
 
   </head>
@@ -47,14 +102,21 @@
 <div class="div">
 
 <div  data-tab="0" class="tab active">
-
-  <button type="button" name="button" class="btn btn-primary btn-lg"> Installer</button>
-
-
+  <div align="center">
+    <img src="assets/raw/frequency_em.png" alt="" ><br><br>
+    <button type="button" name="button" class="btn btn-primary btn-lg btn-block" onclick="nextTab(1)"> Installer</button>
+  </div>
 </div>
 
-<div  data-tab="1" class="tab ">
 
+
+
+
+
+
+
+<div  data-tab="1" class="tab ">
+    <h3 align="center">INFORMATIONS</h3>
 <table class="fomTbl">
 <tr><td>
 NAME
@@ -89,7 +151,7 @@ TEL
 
 <div  data-tab="2" class="tab ">
   <h3 align="center">ACTIVATION</h3>
-  <h4 align="center">HABA12</h4>
+  <h4 align="center" style="color:#ff1111">HABA12</h4>
   <table class="fomTbl">
 
   <tr>
@@ -103,8 +165,6 @@ TEL
     </td>
   </tr>
   </table>
-
-
 </div>
 
 
@@ -128,22 +188,36 @@ TEL
 
 
 <div  data-tab="3" class="tab ">
-  <h3 align="center">ACTIVATION</h3>
-  <h4 align="center">HABA12</h4>
+  <h3 align="center">IMPRIMANTE</h3>
+
   <table class="fomTbl">
 
-  <tr>
-    <td colspan="2">
-  <input type="text" class="form-control" name="" value="">
+    <tr><td>
+    Activer l'imprimante
+      </td><td>
     </td>
-  </tr>
-  <tr>
-    <td colspan="2">
- <button type="button" name="button" class="btn btn-block btn-info">Activer</button>
-    </td>
-  </tr>
-  </table>
+    <td>
+      <div class="switch pull-right">
+       <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" name="ua-4"  value="yes"   type="checkbox">
+       <label for="cmn-toggle-4"></label>
+     </div>
+     </td>
+    </tr>
 
+
+  <tr><td>
+  Nom de partage
+    </td><td>
+  <input type="text" class="form-control" name="PRINTER" value="">
+  </td>
+  <td>
+<button type="button" name="button" class="btn btn-info">Tester</button>
+  </td>
+  </tr>
+
+
+
+  </table>
 
 </div>
 
@@ -157,11 +231,54 @@ TEL
 
 
 
+<div  data-tab="4" class="tab ">
+    <h3 align="center">ADMINISTRATEUR</h3>
+<table class="fomTbl">
+<tr><td>
+NAME D'UTILISATUER
+  </td><td>
+<input type="text" class="form-control" name="" value="">
+</td>
+</tr>
+<tr>
+  <td>
+MOT DE PASSE
+  </td>
+  <td>
+<input type="text" class="form-control" name="" value="">
+  </td>
+</tr>
 
-  <div class="Next" onclick="nextTab(1)">
-  <span extra>demarrer l'installation</span>
+</table>
+</div>
+
+
+
+<div  data-tab="5" class="tab ">
+    <h3 align="center">INSTALLATION </h3>
+    <div align="center">
+      <img src="assets/raw/frequency_em.png" alt="" ><br><br>
+      <button type="button" name="button" class="btn btn-success btn-lg btn-block" > Connexion</button>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+  <div class="Next" onclick="nextTab(1)" style="opacity:0">
+  <span extra></span>
   <i class="fa fa-caret-right"></i>
   </div>
+
+
+
+
+
+
 
 </div>
 
@@ -181,10 +298,15 @@ TEL
 
 
 var buttonText = ['','','','',''] ,
+
   tabs = document.querySelectorAll('.tab').length ,
 currentTab = 0 ,
 progressBar = document.querySelector('.progress-bar') ,
+time = 0;
 nextTab = function(n) {
+  if (time < 2) return;
+
+  time = 0;
 currentTab ++;
 if (currentTab >= tabs) ;//ends
 showTab(currentTab);
@@ -192,6 +314,9 @@ showTab(currentTab);
 };
 
 function showTab(x) {
+
+  if (x+1  == tabs) document.querySelector('.Next').style.opacity = 0;
+  if (x  == 1) document.querySelector('.Next').style.opacity = 1;
   var activeElem = document.querySelector('[data-tab="'+x+'"]');
 if (document.querySelector('.tab.active')) {
   var desapear = document.querySelector('.tab.active');
@@ -205,7 +330,7 @@ desapear.classList.remove('bounceOutLeft');
   },1000);
 
 }
-progressBar.style.width = Math.round(x * 100 / tabs) + '%';
+progressBar.style.width = Math.round((x+1) * 100 / tabs) + '%';
 activeElem.classList.add('active');
 activeElem.classList.add('animated');
 activeElem.classList.add('bounceInRight');
@@ -216,7 +341,7 @@ window.setTimeout(function(){
 },1000);
 }
 
-
+setInterval(function(){ time++; }, 1000);
 
 </script>
 
